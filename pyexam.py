@@ -56,18 +56,39 @@ class Question:
 			print 'The answer set size must be greater or equal to 2'
 			sys.exit()
 		if len(self.answers)+1 < answerSetSize:
-			print '[ERROR] The number of answer choices is less than the answer set size.'
-			print 'Error question:'
-			print ':QUEST:'+self.question_statement
-			print 'Number of answer choices: ' + str(len(self.answers)+1)
-			print 'Required at least '+str(answerSetSize)
-			print 'Check the number of answer choices and try again.'
+			s = (bcolors.FAIL+'Error: The number of answer choices is less than the answer '
+				'set size.\n'+bcolors.ENDC+'Error question:\n'
+				+bcolors.HEADER+':QUEST:'+bcolors.ENDC+" "+self.question_statement+'\n'
+				'Number of answer choices: ' + str(len(self.answers)+1)+'\n'
+				'--answ parameter provided: '+str(answerSetSize)+'\n'
+				'Check the number of answer choices and try again, or change '
+				'the answerSetSize using the --answ parameter')
+			print s
 			sys.exit()
 		answers = self.answers[:answerSetSize-1]
 		answers.append(self.right_answer)
 		shuffle(answers)
 		return self.question_statement, answers, answers.index(self.right_answer)
 
+'''
+Adds some terminal color support
+'''
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    BOLD = "\033[1m"
+    ENDC = '\033[0m'
+
+    def disable(self):
+        self.HEADER = ''
+        self.OKBLUE = ''
+        self.OKGREEN = ''
+        self.WARNING = ''
+        self.FAIL = ''
+        self.ENDC = ''
 
 parser = argparse.ArgumentParser(description='Creates exams')
 parser.add_argument('--answ', dest='answerSetSize', default=5,
