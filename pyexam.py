@@ -12,6 +12,7 @@ def readQuestionFile(path):
 	question = None
 	first_item = True
 	with open(path,"r") as f:
+		line_number = 1
 		for line in f:
 			if questionindicator in line:
 				
@@ -21,10 +22,12 @@ def readQuestionFile(path):
 					questionobjs.append(question)
 				question = Question();
 				question.question_statement = line.strip().replace(questionindicator,"")
+				question.question_line_number = line_number
 			if answerindicator in line:
 				question.answers.append(line.strip().replace(answerindicator,""))
 			if rightanswerindicator in line:
 				question.right_answer = line.strip().replace(rightanswerindicator,"")
+			line_number += 1
 	questionobjs.append(question)
 	return questionobjs
 
@@ -39,11 +42,11 @@ def shuffle(aList):
 
 class Question:
 	def __init__(self, question_statement=None, answers=None, 
-				right_answer=None):
+				right_answer=None,question_line_number=None):
 		self.question_statement = question_statement if question_statement is not None else ""
 		self.answers = shuffle(self.answers) if answers is not None else []
 		self.right_answer = right_answer if right_answer is not None else ""
-
+		self.question_line_number = question_line_number if question_line_number is not None else "0"
 	
 	'''
 	Generates a new question based on a random number of choices
@@ -57,12 +60,13 @@ class Question:
 			sys.exit()
 		if len(self.answers)+1 < answerSetSize:
 			s = (bcolors.FAIL+'Error: The number of answer choices is less than the answer '
-				'set size.\n'+bcolors.ENDC+'Error question:\n'
-				+bcolors.HEADER+':QUEST:'+bcolors.ENDC+" "+self.question_statement+'\n'
-				'Number of answer choices: ' + str(len(self.answers)+1)+'\n'
-				'--answ parameter provided: '+str(answerSetSize)+'\n'
-				'Check the number of answer choices and try again, or change '
-				'the answerSetSize using the --answ parameter')
+				'set size.'+bcolors.ENDC+'\n'
+				+bcolors.HEADER+'Question:'+bcolors.ENDC+" "+self.question_statement+'\n'
+				+bcolors.HEADER+'Line: '+bcolors.ENDC+str(self.question_line_number)+'\n'
+				+bcolors.HEADER+'Answer choices provided: ' +bcolors.ENDC + str(len(self.answers)+1)+'\n'
+				+bcolors.HEADER+'Set parameter: '+bcolors.ENDC +str(answerSetSize)+'\n'
+				+bcolors.OKGREEN+'Check the number of answer choices and try again, or change '
+				'the answerSetSize using the --answ parameter'+bcolors.ENDC)
 			print s
 			sys.exit()
 		answers = self.answers[:answerSetSize-1]
