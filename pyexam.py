@@ -55,7 +55,14 @@ class Question:
 		if answerSetSize < 2:
 			print 'The answer set size must be greater or equal to 2'
 			sys.exit()
-		print answerSetSize
+		if len(self.answers)+1 < answerSetSize:
+			print '[ERROR] The number of answer choices is less than the answer set size.'
+			print 'Error question:'
+			print ':QUEST:'+self.question_statement
+			print 'Number of answer choices: ' + str(len(self.answers)+1)
+			print 'Required at least '+str(answerSetSize)
+			print 'Check the number of answer choices and try again.'
+			sys.exit()
 		answers = self.answers[:answerSetSize-1]
 		answers.append(self.right_answer)
 		shuffle(answers)
