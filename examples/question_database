@@ -1,0 +1,692 @@
+ This is an example question database. The right answer are by any means accurate but here you can test how pyexam works.
+
+Question statement starts with the :QUEST: tag.
+Answer choices start with the :ANSWER: tag.
+Right answer start with :RIGHT_ANSW: tag.
+Comment lines does not need to be marked with a beginning tag.
+
+Here are some question examples:
+
+:QUEST: La suma de las edades de un padre y su hijo es 74 años y la diferencia 26 años. La edad del padre es:
+
+:ANSWER: 45
+:ANSWER: 40
+:ANSWER: 41
+:ANSWER: 42
+:ANSWER: 43
+:ANSWER: 44
+:ANSWER: 50
+:ANSWER: 60
+:RIGHT_ANSW: 48
+
+:SECTION: Dragon ball Z
+
+:QUEST: When Saiyans have their tails and it is a full moon what do they turn into?
+:ANSWER: A large turtle who knows karate
+:RIGHT_ANSW:A large angry Monkey/Gorilla
+:ANSWER: A large tiger beast with large fangs
+:ANSWER: A large winged creature who takes revenge
+:ANSWER: A tiny chihuahua dog with a nasty breath.
+:ANSWER: A tiny butterfly with powerfull wings.
+
+:QUEST: Finish the sentence: most Saiyans love to ____ and ____.
+
+:ANSWER:Eat and fight
+:ANSWER:Hunt and dance
+:ANSWER:Sing and dance
+:ANSWER:Dance and fight
+:RIGHT_ANSW: An answer
+
+:QUEST: Who is Trunks father?
+
+:ANSWER: Yamcha
+:ANSWER: Tien
+:RIGHT_ANSW: Vegeta
+:ANSWER: Goku
+:ANSWER: Miguel
+:ANSWER: Andrés
+:ANSWER: Camilo
+:ANSWER: Álvaro
+:ANSWER: Chan-Chan
+:ANSWER: Chon-Chon
+
+:QUEST: Who trained future Trunks?
+
+:ANSWER: Vegeta
+:ANSWER: Gohan
+:ANSWER: Goku
+:RIGHT_ANSW: Supreme Kai
+:ANSWER: Miguel
+:ANSWER: Andrés
+:ANSWER: Camilo
+:ANSWER: Álvaro
+:ANSWER: Chan-Chan
+:ANSWER: Chon-Chon
+
+:QUEST: Who makes the Time capsule future uses
+
+:RIGHT_ANSW: Bulma/His mother
+:ANSWER: He does
+:ANSWER: Goku
+:ANSWER: His grandfather
+:ANSWER: Miguel
+:ANSWER: Andrés
+:ANSWER: Camilo
+:ANSWER: Álvaro
+:ANSWER: Chan-Chan
+:ANSWER: Chon-Chon
+
+:QUEST: Who does Gohan marry?
+
+:ANSWER: Marron
+:RIGHT_ANSW: Videl
+:ANSWER: Bulma
+:ANSWER: He does
+:ANSWER: Goku
+:ANSWER: His grandfather
+:ANSWER: Álvaro
+:ANSWER: Juan Manuel
+:ANSWER: César
+:ANSWER: Chan-Chan
+:ANSWER: Ramón
+
+7
+What two names does Teen Gohan get called?
+
+Golden fighter and Mr Saiyan
+
+Mr Saiyaman and Mr Goldenman
+
+Golden fighter and Mr Saiyaman
+8
+Does Goku look forward to fighting uub?
+
+No he knows he will win but he does think on training him later on
+
+Not really though he is excited
+
+Yes he thinks he may be a challenge and decides to train him
+
+Absolutely though he decides not to train him later
+9
+Who does little Trunks think is the only worthwhile fighter at the tournament?
+
+Videl
+
+Goten
+
+Vegeta
+
+Gohan
+
+Goku
+10
+Besides being a long series was Dragonhall Z a enjoyable show?
+
+No
+
+Not really
+
+Yes
+
+Who knows
+
+:SECTION: Legend of Zelda Expert Quiz
+
+Let's start out with a very basic question. Who is Zelda?
+
+This character doesn't exist
+
+The guy in green
+
+The princess
+
+The villain
+2
+2. Which Zelda game is set in a different world than most of the other games, and what is the world called?
+
+Wind Waker; The Great Sea
+
+Ocarina of Time; Ganon's Castle
+
+Majora's Mask; Termina
+
+Skyward Sword; Hyrule
+3
+3.	Which Link out of the four betrays Shadow Link in the Four Swords manga?
+
+Vio
+
+Blue
+
+Red
+
+Green
+4
+4.	Which Zelda stage does not exist in Super Smash Brothers Brawl?
+
+Bridge of Eldin
+
+Termina
+
+Temple
+
+Pirate Ship
+5
+5.	Who helps Link out as his companion in Twilight Princess?
+
+Zelda
+
+Fi
+
+Midna
+
+Navi
+6
+6.	Which form of transportation has Link not used?
+
+Boat
+
+Bus
+
+Horseback
+
+Train
+7
+7.	Which is not a Zelda game?
+
+Link's Transformation
+
+A Link to the Past
+
+Oracle of Seasons
+
+Oracle of Ages
+8
+8.	Which of these companions is actually not a companion?
+
+Midna
+
+Tatl
+
+Fi
+
+Dark Link
+9
+9.	What is the only game in which the Octoroks are not present?
+
+A Link to the Past
+
+Wind Waker
+
+Ocarina of Time
+
+Twilight Princess
+10
+10.	Which of these was not a controversy of Ocarina of Time?
+
+The Mirror Shield design
+
+The Gerudo's outfits
+
+Ganondorf's blood
+
+The Fire Temple theme
+11
+Which of these items does NOT belong in Twilight Princess?
+
+Spinner
+
+Whip
+
+Hookshot
+
+Wooden Sword
+12
+12.	What tablet does Link get first in Skyward Sword?
+
+Ruby Tablet
+
+Diamond Tablet
+
+Sapphire Tablet
+
+Emerald Tablet
+13
+13.	Which of these is NOT a sage from Ocarina of Time?
+
+Zelda
+
+Mido
+
+Ruto
+
+Rauru
+14
+14.	Where do the four Links meet Elne?
+
+The Four Sword Sanctuary
+
+Tower of the Winds
+
+She doesn't exist
+
+Village of the Blue Maiden
+15
+15.	What is the name of the main villain in the original Four Swords manga?
+
+Vaati
+
+Vio
+
+Gufuu
+
+Shadow Link
+16
+16.	In which of these Zelda games can you not fish?
+
+Ocarina of Time
+
+Twilight Princess
+
+Wind Waker
+
+A Link to the Past
+17
+17.	There is an easter egg in Hena’s fishing shack in Twilight Princess; she refers to a man in a picture as the greatest fisherman of all time. Which Zelda game is he originally from?
+
+Just Twilight Princess
+
+Ocarina of Time
+
+He doesn't exist
+
+A Link to the Past
+18
+18.	How does Ghirahim feel?
+
+Furious! Outraged! Sick with anger!
+
+Wat
+
+Furious
+
+...?
+19
+19.	Which of these is the correct title of the song that plays when you have to rush Midna to Zelda in Twilight Princess?
+
+Hyrule Field theme
+
+Midna's Theme
+
+Midna's Lament/Midna's Desperate Hour
+
+Twilight Princess main theme
+20
+20.	How does the Wind God’s Aria go in Wind Waker? (for example: Up, Down, Right)
+
+Down, Down, Up, Right, Left, Down
+
+Right, Down, Left
+
+Up, Up, Down, Right, Left, Right
+
+Up, Down, Right
+21
+21.	What are the correct personalities of the Four Links, according to the original Japanese manga?
+
+Green- Focused; Blue- Innocent; Vio- Super Cool; Red- Really Angry
+
+They're not supposed to have personalities
+
+Green- Focused and Motivated; Blue- Innocent and Optimistic; Red- Hotheaded and Aggressive; Vio- Calm and Collected
+
+Green- Focused and Motivated; Blue- Hotheaded and Aggressive; Red- Innocent and Optimistic; Vio- Calm and Collected
+22
+22.	Which two items can you use to distract the main villains in Skyward Sword and Twilight Princess?
+
+Skyward Sword- Whip; Twilight Princess- None
+
+Um….Demise and Ganondorf can’t be distracted.
+
+Skyward Sword- Bug Net; Twilight Princess- Fishing Rod
+
+Twilight Princess- Fishing Rod; Skyward Sword- None
+23
+23.	How much time do you have to get to find each Tear of Light before Guardians activate themselves in Skyward Sword?
+
+120 seconds
+
+1 minute
+
+No time limit
+
+90 seconds
+24
+24.	Who stole Majora’s Mask?
+
+The Happy Mask Salesman
+
+Skull Kid
+
+Link
+
+Nobody
+25
+25.	In which game did Zelda and Link know each other since they were children?
+
+Wind Waker
+
+Ocarina of Time
+
+Twilight Princess
+
+Skyward Sword
+26
+26.	How many sages are there?
+
+7
+
+13
+
+1
+
+12
+27
+27.	What is Ganondorf exactly?
+
+A hylian
+
+Nobody knows
+
+A god
+
+A gerudo
+28
+28.	Which of these does not belong?
+
+Kokiri Forest
+
+Skyloft
+
+Termina
+
+Ordon Village
+29
+29.	Which of these games have I not made a reference to in this quiz?
+
+Ocarina of Time
+
+Twilight Princess
+
+Four Swords
+
+Minish Cap
+30
+30.	What are Darknuts, exactly?
+
+They’re basically knights that are challenging
+
+Wat
+
+Those weird things in Ocarina of Time that shoot nuts at you
+
+They don't exist
+31
+31.	Which of these is not a goddess?
+
+Farore
+
+Zelda
+
+Nayru
+
+Din
+32
+32.	Which of these is not a piece of the Triforce?
+
+Bacon
+
+Courage
+
+Wisdom
+
+Power
+33
+33.	Which of these is a recurring enemy in the entire series?
+
+Octoroks
+
+Weeping Angels
+
+Ganondorf
+
+Keese
+34
+34.	Who said this: HYAAAAAAAAAAAAAAAAAAAAH!
+
+Zelda
+
+Ganondorf
+
+Wat
+
+Link
+35
+35.	What was Ganondorf’s fate in Wind Waker?
+
+Sent to the Sacred Realm
+
+He became a ghost
+
+Turned to stone
+
+He died
+36
+36.	What was Ganondorf’s fate in Ocarina of Time?
+
+He became a ghost
+
+He died
+
+He was sent to the Sacred Realm
+
+He was turned to stone
+37
+37.	Which of these places has Link not lived in?
+
+Skyloft
+
+Ordon Village
+
+Gerudo Valley
+
+Kokiri Village
+38
+38.	What boots are not acquired in Ocarina of Time?
+
+Kokiri boots
+
+Ice boots
+
+Hover boots
+
+Iron boots
+39
+39.	Which of these is NOT a fairy?
+
+Tael
+
+Fi
+
+Tatl
+
+Navi
+40
+40.	What are the birds called in Skyward Sword?
+
+Birds
+
+Loftwings
+
+Hawks
+
+Keese
+
+:SECTION: Iron Maiden Quiz
+
+Where did Iron Maiden gets its name from?
+
+A single women who was really strong
+
+The move called Man in the Iron Mask
+
+After watching Futurama and viewing robot porn
+2
+Name the VERY ORIGINAL line up.
+
+Steve Harris, Paul Day, Dave Sullivan, Terry Rance, Ron Mattews
+
+Steve Harris, Dennis Wilcock, Terry Wapram, Tony Moore, Barry 'ThunderStick' Graham
+
+Steve Harris, Dennis Wilcock, Dave Murray, Bob Saywer, Ron Mattews
+
+Dave Murray, Steve Harris, Terry Rance, Bob Saywer, Ron Matthews
+3
+What's the name of there E.P?
+
+Iron Maiden E.P
+
+I.M E.P
+
+Iron Maiden Mark 1
+
+The Soundhouse tapes
+4
+Second album name?
+
+Killers
+
+Wrath
+
+Thrashers
+5
+Time for name those lyrics! "I'm coming back; I will return!"
+
+Run to the hills
+
+Invaders
+
+Number of the Beast
+
+22 Acacia Avenue
+
+The Wicker Man
+6
+"Scream, for mercy..."
+
+Wrathchild
+
+Killers
+
+Number of the Beast
+7
+"Piper rides the gates of dawn.."
+
+Be Quick Or Be Dead
+
+Flight Of Icarus
+
+Sign Of The Cross
+
+Fear Of The Dark
+
+The Wicker Man
+8
+No more lyrics. Here's a easy one. What is the name of the ghoulish mascot of Iron Maiden?
+
+Tony
+
+Eddie
+
+Snaggletooth
+
+Mack
+9
+Where did Steve Harris get the "inspiration" to write Number of the Beast?
+
+He's satanic I tell you!
+
+Iron Maiden never wrote that, idiot
+
+He is just a troubled soul...*sniff*
+
+He liked to shake things up
+
+He had a nightmare after he watched Damien: Omen 2
+10
+What instrument does the Steve guy play?
+
+The bass
+
+keyboards
+
+The guitar
+
+The drums
+
+Vocals
+11
+Nicko McBrain's real name is?
+
+Who?
+
+Nicholas
+
+David
+
+Olson
+
+Micheal
+12
+Bruce Dickinson plays this sport, being very good at it. What sport is it?
+
+Rugby
+
+Golf
+
+Fencing
+
+Cricket
+
+Soccer/Football
+13
+What did Dave Murray die by?
+
+Die? What? He didn't die
+
+Prostate Cancer
+
+Murdered
+
+Suicide
+
+Car Crash
+14
+What year did Maiden form, anyways?
+
+1975, England
+
+1980, America
+
+1974, England
+15
+Last Question! What is Bruce Dickinson's farewell video called?
+
+Fair Well Bruce
+
+To the Solo
+
+Raising Hell
+
+Bye Bye Bruce
