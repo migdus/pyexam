@@ -11,7 +11,7 @@ class Constants:
 '''
 Reads a flat file of questions
 '''
-def readQuestionFile(path):
+def read_question_file(path):
 	questionobjs = []
 	question = Question()
 	first_item = True
@@ -25,12 +25,15 @@ def readQuestionFile(path):
 				else:
 					questionobjs.append(question)
 				question = Question();
-				question.question_statement = line.strip().replace(Constants.questionindicator,"")
+				question.question_statement = (line.strip()
+					.replace(Constants.questionindicator,""))
 				question.question_line_number = line_number
 			if Constants.answerindicator in line:
-				question.answers.append(line.strip().replace(Constants.answerindicator,""))
+				question.answers.append(line.strip()
+					.replace(Constants.answerindicator,""))
 			if Constants.rightanswerindicator in line:
-				question.right_answer = line.strip().replace(Constants.rightanswerindicator,"")
+				question.right_answer = (line.strip()
+				.replace(Constants.rightanswerindicator,""))
 			line_number += 1
 	questionobjs.append(question)
 	return questionobjs
@@ -47,10 +50,12 @@ def shuffle(aList):
 class Question:
 	def __init__(self, question_statement=None, answers=None, 
 				right_answer=None,question_line_number=None):
-		self.question_statement = question_statement if question_statement is not None else ""
+		self.question_statement = (question_statement if question_statement 
+			is not None else "")
 		self.answers = shuffle(self.answers) if answers is not None else []
 		self.right_answer = right_answer if right_answer is not None else ""
-		self.question_line_number = question_line_number if question_line_number is not None else "0"
+		self.question_line_number = (question_line_number if 
+			question_line_number is not None else "0")
 	
 	'''
 	Generates a new question based on a random number of choices
@@ -58,30 +63,36 @@ class Question:
 
 	Returns: question statement, answers and the index of the right answer
 	'''
-	def generateNewVersionOfQuestion(self,answerSetSize):
+	def generate_shuffled_question(self,answerSetSize):
 		if answerSetSize < 2:
 			print 'The answer set size must be greater or equal to 2'
 			sys.exit()
 		if len(self.answers)+1 < answerSetSize:
-			s = (bcolors.FAIL+'Error: The number of answer choices is less than the answer '
-				'set size.'+bcolors.ENDC+'\n'
-				+bcolors.HEADER+'Question:'+bcolors.ENDC+" "+self.question_statement+'\n'
-				+bcolors.HEADER+'Line: '+bcolors.ENDC+str(self.question_line_number)+'\n'
-				+bcolors.HEADER+'Answer choices provided: ' +bcolors.ENDC + str(len(self.answers)+1)+'\n'
-				+bcolors.HEADER+'Set parameter: '+bcolors.ENDC +str(answerSetSize)+'\n'
-				+bcolors.OKGREEN+'Check the number of answer choices and try again, or change '
-				'the answerSetSize using the --answ parameter'+bcolors.ENDC)
+			s = (Bcolors.FAIL+'Error: The number of answer choices is less '
+				'than the answer set size.'+Bcolors.ENDC+'\n'
+				+Bcolors.HEADER+'Question:'+Bcolors.ENDC+" "
+				+self.question_statement+'\n'
+				+Bcolors.HEADER+'Line: '+Bcolors.ENDC+
+				str(self.question_line_number)+'\n'
+				+Bcolors.HEADER+'Answer choices provided: ' 
+				+Bcolors.ENDC + str(len(self.answers)+1)+'\n'
+				+Bcolors.HEADER+'Set parameter: '
+				+Bcolors.ENDC +str(answerSetSize)+'\n'
+				+Bcolors.OKGREEN+'Check the number of answer choices and try '
+				'again, or change the answerSetSize using the --answ parameter'
+				+Bcolors.ENDC)
 			print s
 			sys.exit()
 		answers = self.answers[:answerSetSize-1]
 		answers.append(self.right_answer)
 		shuffle(answers)
-		return self.question_statement, answers, answers.index(self.right_answer)
+		return (self.question_statement, answers, 
+			answers.index(self.right_answer))
 
 '''
 Adds some terminal color support
 '''
-class bcolors:
+class Bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -122,7 +133,7 @@ class Exam:
 	def __init__(self,latexTemplatePath=None):
 		pass
 
-	def readLatexTemplate(self,path):
+	def read_latex_template(self,path):
 		flag_beginning = True
 		flag_end = False
 		inside_question = False
@@ -137,10 +148,12 @@ class Exam:
 					#pdb.set_trace()
 					if Constants.answerindicator in line:
 						self.answer_buffer = line
-						self.template_buffer += '\n'+Constants.answerindicator+'\n'
+						self.template_buffer += ('\n'+
+							Constants.answerindicator+'\n')
 					elif Constants.questionindicator in line:
 						self.question_buffer = line
-						self.template_buffer += '\n'+Constants.questionindicator+'\n'
+						self.template_buffer += ('\n'+
+							Constants.questionindicator+'\n')
 					elif Constants.end_question in line:
 						inside_question = False
 				else:
@@ -162,13 +175,14 @@ parser.add_argument('--latemp', dest='latexTemplateLocation',
 					help='Set the latex template path')
 args = parser.parse_args()
 
-questionobjs = readQuestionFile(args.questionDatabasePath)
+questionobjs = read_question_file(args.questionDatabasePath)
 
-question_statement, answers, rigth_answer_index = questionobjs[2].generateNewVersionOfQuestion(int(args.answerSetSize))
+question_statement, answers, rigth_answer_index = (questionobjs[2]
+	.generate_shuffled_question(int(args.answerSetSize)))
 
 exam = Exam()
 if args.outputFormat == 'latex':
-	exam.readLatexTemplate(args.latexTemplateLocation)
+	exam.read_latex_template(args.latexTemplateLocation)
 
 print "Question buffer ---"
 print exam.question_buffer
