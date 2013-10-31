@@ -1,0 +1,43 @@
+\documentclass[letterpaper,addpoints,answers,twocolumn,10pt]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,mexico]{babel}
+\usepackage{listingsutf8}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\pagestyle{head}
+\firstpageheadrule
+\runningheadrule
+\header{\author}{\class \assignment}{\deadline}
+\newcommand{\class}{Nombre de la clase - Nombre del examen\\Nombre de la universidad}
+\newcommand{\assignment}{}
+\newcommand{\deadline}{Page \thepage\ of \numpages}
+\newcommand{\skipquestion}{\qformat{} \question \noqformat}
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
+\pointpoints{punto}{puntos}
+\bonuspointpoints{punto extra}{puntos extra}
+\begin{document}
+
+\noindent Nombre completo: :STUDENT_NAME:
+\newline \newline \newline \newline
+Código: :STUDENT_CODE:\newline \newline 
+{\bf Instrucciones:} Seleccione la mejor respuesta entre las alternativas presentadas. Solo se admite una respuesta por pregunta.
+\newline {\bf Duración:} 1 h 30 m
+
+\begin{enumerate}[leftmargin=.2in]
+
+:BEGIN_QUESTION:
+
+\item :QUESTION:
+
+\begin{enumerate}[noitemsep,leftmargin=0in]
+
+\item :ANSWER:
+
+\end{enumerate}
+
+:END_QUESTION:
+
+\end{enumerate}
+\end{document}

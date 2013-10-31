@@ -9,7 +9,7 @@ It takes a question database, an student database, mix them and generate unique 
 
 Here is a complete example:
 
-	python pyexam.py --answ 4 --qdb path/to/question_database --edb /path/to/student_database --nq 25
+	python pyexam.py --answ 4 --qdb /path/to/question_database --nq 5 --ouf latex --latemp /path/to/latex_template --edb /path/to/student_database
 
 #### Options 
 
@@ -40,26 +40,26 @@ If you use:
 		... --ouf latex --latemp /path/to/latex/template
 Then you have to define the latex template. This template is a simple latex file with your information, page configuration, etc, but contains the following tags:
 
-* **:STUDENT_NAME:**: The location where you want the student name to be placed.
-* **:STUDENT_CODE:**: The location where you want the student code to be placed.
-* **:QUEST:**: The location where you want your question to be placed.
-* **:ANSW:**: The location where you want your answer to be placed. The script will use this location to place all answers related to that question.
+* **:STUDENT_NAME:** The location where you want the student name to be placed.
+* **:STUDENT_CODE:** The location where you want the student code to be placed.
+* **:QUESTION:** The location where you want your question to be placed.
+* **:ANSWER:** The location where you want your answer to be placed. The script will use this location to place all answers related to that question.
 
-You need to write only one tag per type. For more, see *examples* directory for a working example.
+You need to write **only one tag** per type. For more, see *examples* directory for a working example.
 
 ### Question database
 
-The questions database file holds the question information. Use only one tag per line. Lines without tags are not taken into account: they are considered as comments.
+The questions database file holds the question information. **Use only one tag per line**. Lines without tags are not taken into account: they are considered as comments.
 
 Each question contains the following tags:
 
-**:QUEST:**: Contains the question statement. One per question.
-**:ANSWER:** An answer choice. A question can hold multiple answers.
-**:RIGHT_ANSW:**: The right answer for the question. A question can hold only one right answer.
+* **:QUESTION:**: Contains the question statement. One per question.
+* **:ANSWER:** An answer choice. A question can hold multiple answers.
+* **:RIGHT_ANSWER:** The right answer for the question. A question can hold only one right answer.
 
 ####Example 
 
-**:QUEST:** What's the capital of Huila?
+**:QUESTION:** What's the capital of Huila?
 
 **:ANSWER:** Bogotá
 
@@ -67,7 +67,7 @@ Each question contains the following tags:
 
 **:ANSWER:** Bucaramanga
 
-**:RIGHT_ANSW:** Neiva
+**:RIGHT_ANSWER:** Neiva
 
 **:ANSWER:** Cartagena
 

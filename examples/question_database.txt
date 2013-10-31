@@ -1,13 +1,13 @@
 This is an example question database. The right answer are by any means accurate but here you can test how pyexam works.
 
-Question statement starts with the :QUEST: tag.
+Question statement starts with the :QUESTION: tag.
 Answer choices start with the :ANSWER: tag.
-Right answer start with :RIGHT_ANSW: tag.
+Right answer start with :RIGHT_ANSWER: tag.
 Comment lines does not need to be marked with a beginning tag.
 
 Here are some question examples:
 
-:QUEST: La suma de las edades de un padre y su hijo es 74 años y la diferencia 26 años. La edad del padre es:
+:QUESTION: La suma de las edades de un padre y su hijo es 74 años y la diferencia 26 años. La edad del padre es:
 
 :ANSWER: 45
 :ANSWER: 40
@@ -17,31 +17,31 @@ Here are some question examples:
 :ANSWER: 44
 :ANSWER: 50
 :ANSWER: 60
-:RIGHT_ANSW: 48
+:RIGHT_ANSWER: 48
 
 :SECTION: Dragon ball Z
 
-:QUEST: When Saiyans have their tails and it is a full moon what do they turn into?
+:QUESTION: When Saiyans have their tails and it is a full moon what do they turn into?
 :ANSWER: A large turtle who knows karate
-:RIGHT_ANSW:A large angry Monkey/Gorilla
+:RIGHT_ANSWER:A large angry Monkey/Gorilla
 :ANSWER: A large tiger beast with large fangs
 :ANSWER: A large winged creature who takes revenge
 :ANSWER: A tiny chihuahua dog with a nasty breath.
 :ANSWER: A tiny butterfly with powerfull wings.
 
-:QUEST: Finish the sentence: most Saiyans love to ____ and ____.
+:QUESTION: Finish the sentence: most Saiyans love to ____ and ____.
 
 :ANSWER:Eat and fight
 :ANSWER:Hunt and dance
 :ANSWER:Sing and dance
 :ANSWER:Dance and fight
-:RIGHT_ANSW: An answer
+:RIGHT_ANSWER: An answer
 
-:QUEST: Who is Trunks father?
+:QUESTION: Who is Trunks father?
 
 :ANSWER: Yamcha
 :ANSWER: Tien
-:RIGHT_ANSW: Vegeta
+:RIGHT_ANSWER: Vegeta
 :ANSWER: Goku
 :ANSWER: Miguel
 :ANSWER: Andrés
@@ -50,12 +50,12 @@ Here are some question examples:
 :ANSWER: Chan-Chan
 :ANSWER: Chon-Chon
 
-:QUEST: Who trained future Trunks?
+:QUESTION: Who trained future Trunks?
 
 :ANSWER: Vegeta
 :ANSWER: Gohan
 :ANSWER: Goku
-:RIGHT_ANSW: Supreme Kai
+:RIGHT_ANSWER: Supreme Kai
 :ANSWER: Miguel
 :ANSWER: Andrés
 :ANSWER: Camilo
@@ -63,9 +63,9 @@ Here are some question examples:
 :ANSWER: Chan-Chan
 :ANSWER: Chon-Chon
 
-:QUEST: Who makes the Time capsule future uses
+:QUESTION: Who makes the Time capsule future uses
 
-:RIGHT_ANSW: Bulma/His mother
+:RIGHT_ANSWER: Bulma/His mother
 :ANSWER: He does
 :ANSWER: Goku
 :ANSWER: His grandfather
@@ -76,10 +76,10 @@ Here are some question examples:
 :ANSWER: Chan-Chan
 :ANSWER: Chon-Chon
 
-:QUEST: Who does Gohan marry?
+:QUESTION: Who does Gohan marry?
 
 :ANSWER: Marron
-:RIGHT_ANSW: Videl
+:RIGHT_ANSWER: Videl
 :ANSWER: Bulma
 :ANSWER: He does
 :ANSWER: Goku
