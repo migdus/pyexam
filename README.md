@@ -9,12 +9,12 @@ It takes a question database, an student database, mix them and generate unique 
 
 Here is a complete example:
 
-	python pyexam.py --answ 4 --qdb /path/to/question_database --nq 5 --ouf latex --latemp /path/to/latex_template --edb /path/to/student_database
+	python pyexam.py --answ 4 --qdb /path/to/question_database --nq 5 --ouf latex --latemp /path/to/latex_template --sdb /path/to/student_database
 
 #### Options 
 
 * **--qdb**: Path to the questions database file.
-* **--edb**: Path to the student names database.
+* **--sdb**: Path to the student names database.
 * **--nq**: Number of questions of the exam.
 * **--answ**: Answer set size per question. This must be greater or equal to 2 and less than the number of choices of each question.
 * **--ouf**: Output format. *txt* and *latex* supported. Default: *txt*. If *latex* supported, you must use the **--latemp** option.
