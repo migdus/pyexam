@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import sys, random, argparse, pdb
 
 class Constants:
@@ -11,6 +14,7 @@ class Constants:
 	BEGIN_QUESTION_TAG = ":BEGIN_QUESTION:"
 	END_QUESTION_TAG = ":END_QUESTION:"
 	STUDENT_NAME_TAG = ":STUDENT_NAME:"
+	STUDENT_CODE_TAG = ":STUDENT_CODE"
 
 	'''
 	Adds some terminal color support
@@ -32,7 +36,7 @@ class Constants:
 		FAIL = '\033[91m'
 		BOLD = '\033[1m'
 		ENDC = '\033[0m'
-		
+
 	def disable_colors(self):
 		self.HEADER = ''
 		self.OKBLUE = ''
@@ -106,19 +110,23 @@ class Question:
 		return (self._question_statement, answers, 
 			answers.index(self._right_answer))
 
-
-
 class Exam:
+
 	_template_buffer = ""
 	_question_buffer = ""
 	_answer_buffer = ""
 
-	def __init__(self, question_db_path, latex_template_path):
+	def __init__(self, question_db_path, latex_template_path,
+			student_database_path, number_of_questions):
 		self._question_db_path = question_db_path
 		self._question_list = []
 		self._latex_template_path = latex_template_path
+		self._student_database_path = student_database_path
+		self._number_of_questions = number_of_questions
+		self._student_database = []
 
 	def read_latex_template(self):
+		print Constants.OKGREEN + 'Reading latex template' + Constants.ENDC
 		inside_question = False
 		with open(self._latex_template_path,"r") as f:
 			for line in f:
@@ -165,7 +173,53 @@ class Exam:
 					.replace(Constants.RIGHT_ANSWER_TAG,""))
 				line_number += 1
 		self._question_list.append(question)
-					
+
+	def read_student_file(self):
+		flag_expected_student_name_tag = True
+		flag_error_found = False
+		line_counter = 1
+
+		error_msg = (Constants.FAIL + 'Error: Expected EXPECTED_TAG_NAME.'
+						'\nAt line: ' + str(line_counter) + '\nAt file: '
+						 + self._student_database_path + Constants.ENDC)
+
+		with open(self._student_database_path, "r") as f:
+			new_student = {}
+			for line in f:
+				if Constants.STUDENT_NAME_TAG in line:
+					if flag_expected_student_name_tag == True:
+						new_student['name'] = line.replace(
+							Constants.STUDENT_NAME_TAG, '')
+						flag_expected_student_name_tag = False
+					else:
+						error_msg.replace("EXPECTED_TAG_NAME",
+							'Student name tag')
+						flag_error_found = True
+
+				elif Constants.STUDENT_CODE_TAG in line:
+					if flag_expected_student_name_tag == False:
+						new_student['code'] = line.replace(
+							Constants.STUDENT_CODE_TAG, '')
+						self._student_database.append(new_student)
+						new_student = {}
+						flag_expected_student_name_tag = True
+					else:
+						error_msg.replace("EXPECTED_TAG_NAME",
+							'Student code tag')
+						flag_error_found = True
+
+				if flag_error_found == True:
+					print error_msg
+					sys.exit()
+
+				line_counter += 1
+
+	def generate(self):
+		student_database = self._student_database[:]
+		for student in student_database:
+			student['name']
+			student['code']
+
 def check_input_parameters(answer_set_size, question_database_path,
 	student_database_path, number_of_questions, output_format,
 	latex_template_location):
@@ -204,7 +258,7 @@ parser.add_argument('--answ', dest = 'answer_set_size', default = 5,
 parser.add_argument('--qdb', dest = 'question_database_path',
 					required = True, help = 
 					'Set the question database file path')
-parser.add_argument('--edb', dest = 'student_database_path', required = True,
+parser.add_argument('--sdb', dest = 'student_database_path', required = True,
 					help = 'Set the student database file')
 parser.add_argument('--nq', dest = 'number_of_questions', required = True,
 					help = 'Set the number of questions of the test')
@@ -224,17 +278,17 @@ check_input_parameters(answer_set_size=args.answer_set_size,
 
 if args.output_format == 'latex':
 	exam = Exam(question_db_path = args.question_database_path,
-		latex_template_path = args.latex_template_location)
+		latex_template_path = args.latex_template_location,
+		student_database_path = args.student_database_path,
+		number_of_questions = args.number_of_questions)
 	exam.read_question_file()
 	exam.read_latex_template()
+	exam.read_student_file()
+	print exam._student_database
+	'''
 	question_statement, answers, rigth_answer_index = (exam._question_list[2]
 		.generate_shuffled_question(int(args.answer_set_size)))
-print "Question buffer ---"
-print exam._question_buffer
-print "Answers buffer---"
-print exam._answer_buffer
+	'''
 
-print "Template buffer ---"
-print exam._template_buffer
 
 
