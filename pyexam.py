@@ -42,36 +42,6 @@ class Constants:
 		self.ENDC = ''
 
 '''
-Reads a flat file of questions
-'''
-def read_question_file(path):
-	questionobjs = []
-	question = Question()
-	first_item = True
-	with open(path,"r") as f:
-		line_number = 1
-		for line in f:
-			if Constants.QUESTION_TAG in line:
-				
-				if first_item is True:
-					first_item = False
-				else:
-					questionobjs.append(question)
-				question = Question();
-				question.set_question_statement = (line.strip()
-					.replace(Constants.QUESTION_TAG,""))
-				question.set_question_line_number = line_number
-			if Constants.ANSWER_TAG in line:
-				question.add_new_answer(line.strip()
-					.replace(Constants.ANSWER_TAG,""))
-			if Constants.RIGHT_ANSWER_TAG in line:
-				question.set_right_answer(line.strip()
-				.replace(Constants.RIGHT_ANSWER_TAG,""))
-			line_number += 1
-	questionobjs.append(question)
-	return questionobjs
-
-'''
 Shuffles a list using the Knuth-Fisher-Yates shuffle algorithm
 '''
 def shuffle(aList):
@@ -139,54 +109,62 @@ class Question:
 
 
 class Exam:
-	student_name_line_number = None
-	student_code_line_number = None
+	_template_buffer = ""
+	_question_buffer = ""
+	_answer_buffer = ""
 
-	'''
-		Template minus question and answer line
-		The question location will be marked with the QUESTION_TAG.
-	'''
+	def __init__(self, question_db_path, latex_template_path):
+		self._question_db_path = question_db_path
+		self._question_list = []
+		self._latex_template_path = latex_template_path
 
-	template_buffer = ""
-
-	# Whole question text
-	question_buffer = ""
-
-	'''
-		Answer line
-		The location to replace with the answer will be marked with the
-		ANSWER_TAG
-		'''
-	answer_buffer = ""
-
-	def __init__(self,latexTemplatePath=None):
-		pass
-
-	def read_latex_template(self,path):
-		flag_beginning = True
-		flag_end = False
+	def read_latex_template(self):
 		inside_question = False
-
-		with open(path,"r") as f:
+		with open(self._latex_template_path,"r") as f:
 			for line in f:
-				# pdb.set_trace()
 				if Constants.BEGIN_QUESTION_TAG in line:
 					inside_question = True
-				
 				if inside_question == True:
-					#pdb.set_trace()
 					if Constants.ANSWER_TAG in line:
-						self.answer_buffer = line
-						self.template_buffer += ('\n'+
-							Constants.ANSWER_TAG+'\n')
+						self._answer_buffer = line
+						self._template_buffer += ('\n' +
+							Constants.ANSWER_TAG +'\n')
 					elif Constants.QUESTION_TAG in line:
-						self.question_buffer = line
-						self.template_buffer += ('\n'+
-							Constants.QUESTION_TAG+'\n')
+						self._question_buffer = line
+						self._template_buffer += ('\n' +
+							Constants.QUESTION_TAG + '\n')
 					elif Constants.END_QUESTION_TAG in line:
 						inside_question = False
 				else:
-					self.template_buffer += line
+					self._template_buffer += line
+
+	'''
+	Reads a flat file of questions
+	'''
+	def read_question_file(self):
+		question = Question()
+		first_item = True
+		with open(self._question_db_path,"r") as f:
+			line_number = 1
+			for line in f:
+				if Constants.QUESTION_TAG in line:
+					
+					if first_item is True:
+						first_item = False
+					else:
+						self._question_list.append(question)
+					question = Question();
+					question.set_question_statement = (line.strip()
+						.replace(Constants.QUESTION_TAG,""))
+					question.set_question_line_number = line_number
+				if Constants.ANSWER_TAG in line:
+					question.add_new_answer(line.strip()
+						.replace(Constants.ANSWER_TAG,""))
+				if Constants.RIGHT_ANSWER_TAG in line:
+					question.set_right_answer(line.strip()
+					.replace(Constants.RIGHT_ANSWER_TAG,""))
+				line_number += 1
+		self._question_list.append(question)
 					
 def check_input_parameters(answer_set_size, question_database_path,
 	student_database_path, number_of_questions, output_format,
@@ -243,21 +221,20 @@ check_input_parameters(answer_set_size=args.answer_set_size,
 	output_format = args.output_format, 
 	latex_template_location = args.latex_template_location)
 
-questionobjs = read_question_file(args.question_database_path)
 
-question_statement, answers, rigth_answer_index = (questionobjs[2]
-	.generate_shuffled_question(int(args.answer_set_size)))
-
-exam = Exam()
 if args.output_format == 'latex':
-	exam.read_latex_template(args.latex_template_location)
-
+	exam = Exam(question_db_path = args.question_database_path,
+		latex_template_path = args.latex_template_location)
+	exam.read_question_file()
+	exam.read_latex_template()
+	question_statement, answers, rigth_answer_index = (exam._question_list[2]
+		.generate_shuffled_question(int(args.answer_set_size)))
 print "Question buffer ---"
-print exam.question_buffer
+print exam._question_buffer
 print "Answers buffer---"
-print exam.answer_buffer
+print exam._answer_buffer
 
 print "Template buffer ---"
-print exam.template_buffer
+print exam._template_buffer
 
 
