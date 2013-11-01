@@ -39,7 +39,7 @@ Lines without tag will be ignored.
 :STUDENT_CODE: 130
 
 :STUDENT_NAME: Jorge Villamil Cordovez
-:STUDENT_CODE: 1929_2010)
+:STUDENT_CODE: 1929_2010
 
 :STUDENT_NAME: José Ignacio Olave Cabrera
 :STUDENT_CODE: 131
