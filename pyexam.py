@@ -1,12 +1,45 @@
 import sys, random, argparse, pdb
 
 class Constants:
-	questionindicator = ":QUESTION:"
-	answerindicator = ":ANSWER:"
-	rightanswerindicator = ":RIGHT_ANSWER:"
-	begin_question = ":BEGIN_QUESTION:"
-	end_question = ":END_QUESTION:"
-	student_name = ":STUDENT_NAME:"
+	'''
+	Internal tags
+	Change them if you feel uncomfortable with the defaults
+	'''
+	QUESTION_TAG = ":QUESTION:"
+	ANSWER_TAG = ":ANSWER:"
+	RIGHT_ANSWER_TAG = ":RIGHT_ANSWER:"
+	BEGIN_QUESTION_TAG = ":BEGIN_QUESTION:"
+	END_QUESTION_TAG = ":END_QUESTION:"
+	STUDENT_NAME_TAG = ":STUDENT_NAME:"
+
+	'''
+	Adds some terminal color support
+	'''
+
+	HEADER = '\033[95m'
+	OKBLUE = '\033[94m'
+	OKGREEN = '\033[92m'
+	WARNING = '\033[93m'
+	FAIL = '\033[91m'
+	BOLD = '\033[1m'
+	ENDC = '\033[0m'
+	
+	def enable_colors(self):
+		HEADER = '\033[95m'
+		OKBLUE = '\033[94m'
+		OKGREEN = '\033[92m'
+		WARNING = '\033[93m'
+		FAIL = '\033[91m'
+		BOLD = '\033[1m'
+		ENDC = '\033[0m'
+		
+	def disable_colors(self):
+		self.HEADER = ''
+		self.OKBLUE = ''
+		self.OKGREEN = ''
+		self.WARNING = ''
+		self.FAIL = ''
+		self.ENDC = ''
 
 '''
 Reads a flat file of questions
@@ -18,22 +51,22 @@ def read_question_file(path):
 	with open(path,"r") as f:
 		line_number = 1
 		for line in f:
-			if Constants.questionindicator in line:
+			if Constants.QUESTION_TAG in line:
 				
 				if first_item is True:
 					first_item = False
 				else:
 					questionobjs.append(question)
 				question = Question();
-				question.question_statement = (line.strip()
-					.replace(Constants.questionindicator,""))
-				question.question_line_number = line_number
-			if Constants.answerindicator in line:
-				question.answers.append(line.strip()
-					.replace(Constants.answerindicator,""))
-			if Constants.rightanswerindicator in line:
-				question.right_answer = (line.strip()
-				.replace(Constants.rightanswerindicator,""))
+				question.set_question_statement = (line.strip()
+					.replace(Constants.QUESTION_TAG,""))
+				question.set_question_line_number = line_number
+			if Constants.ANSWER_TAG in line:
+				question.add_new_answer(line.strip()
+					.replace(Constants.ANSWER_TAG,""))
+			if Constants.RIGHT_ANSWER_TAG in line:
+				question.set_right_answer(line.strip()
+				.replace(Constants.RIGHT_ANSWER_TAG,""))
 			line_number += 1
 	questionobjs.append(question)
 	return questionobjs
@@ -48,66 +81,62 @@ def shuffle(aList):
 		aList[i], aList[n] = aList[n], aList[i]
 
 class Question:
+
 	def __init__(self, question_statement=None, answers=None, 
 				right_answer=None,question_line_number=None):
-		self.question_statement = (question_statement if question_statement 
+		self._question_statement = (question_statement if question_statement 
 			is not None else "")
-		self.answers = shuffle(self.answers) if answers is not None else []
-		self.right_answer = right_answer if right_answer is not None else ""
-		self.question_line_number = (question_line_number if 
+		self._answers = shuffle(self._answers) if answers is not None else []
+		self._right_answer = right_answer if right_answer is not None else ""
+		self._question_line_number = (question_line_number if 
 			question_line_number is not None else "0")
 	
+	def set_question_statement(self,question_statement):
+		self._question_statement = question_statement
+
+	def set_answers(self,answers):
+		self._answers = answers
+
+	def set_right_answer(self,right_answer):
+		self._right_answer = right_answer
+
+	def set_question_line_number(self,question_line_number):
+		self._question_line_number = question_line_number
+	
+	def add_new_answer(self,answer):
+		self._answers.append(answer)
+
 	'''
 	Generates a new question based on a random number of choices
-	limited by the answerSetSize.
+	limited by the answer_set_size.
 
 	Returns: question statement, answers and the index of the right answer
 	'''
-	def generate_shuffled_question(self,answerSetSize):
-		if answerSetSize < 2:
-			print 'The answer set size must be greater or equal to 2'
+	def generate_shuffled_question(self,answer_set_size):
+		if len(self._answers)+1 < answer_set_size:
+			error_msg += (
+				Constants.FAIL + 'Error: The number of answer choices is less '
+				'than the answer set size.'+Constants.ENDC + '\n'
+				+ Constants.HEADER+'Question:'+Constants.ENDC + " "
+				+ self._question_statement + '\n'
+				+ Constants.HEADER + 'Line: ' + Constants.ENDC +
+				str(self._question_line_number) + '\n'
+				+ Constants.HEADER+'Answer choices provided: ' 
+				+ Constants.ENDC + str(len(self._answers) + 1) + '\n'
+				+ Constants.HEADER+'Set parameter: '
+				+ Constants.ENDC +str(answer_set_size) + '\n'
+				+ Constants.OKGREEN+'Check the number of answer choices and '
+				'try again, or change the answer_set_size using the --answ '
+				'parameter' + Constants.ENDC + '\n')
+			print error_msg
 			sys.exit()
-		if len(self.answers)+1 < answerSetSize:
-			s = (Bcolors.FAIL+'Error: The number of answer choices is less '
-				'than the answer set size.'+Bcolors.ENDC+'\n'
-				+Bcolors.HEADER+'Question:'+Bcolors.ENDC+" "
-				+self.question_statement+'\n'
-				+Bcolors.HEADER+'Line: '+Bcolors.ENDC+
-				str(self.question_line_number)+'\n'
-				+Bcolors.HEADER+'Answer choices provided: ' 
-				+Bcolors.ENDC + str(len(self.answers)+1)+'\n'
-				+Bcolors.HEADER+'Set parameter: '
-				+Bcolors.ENDC +str(answerSetSize)+'\n'
-				+Bcolors.OKGREEN+'Check the number of answer choices and try '
-				'again, or change the answerSetSize using the --answ parameter'
-				+Bcolors.ENDC)
-			print s
-			sys.exit()
-		answers = self.answers[:answerSetSize-1]
-		answers.append(self.right_answer)
+		answers = self._answers[:answer_set_size-1]
+		answers.append(self._right_answer)
 		shuffle(answers)
-		return (self.question_statement, answers, 
-			answers.index(self.right_answer))
+		return (self._question_statement, answers, 
+			answers.index(self._right_answer))
 
-'''
-Adds some terminal color support
-'''
-class Bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    BOLD = '\033[1m'
-    ENDC = '\033[0m'
 
-    def disable(self):
-        self.HEADER = ''
-        self.OKBLUE = ''
-        self.OKGREEN = ''
-        self.WARNING = ''
-        self.FAIL = ''
-        self.ENDC = ''
 
 class Exam:
 	student_name_line_number = None
@@ -115,7 +144,7 @@ class Exam:
 
 	'''
 		Template minus question and answer line
-		The question location will be marked with the questionindicator.
+		The question location will be marked with the QUESTION_TAG.
 	'''
 
 	template_buffer = ""
@@ -126,7 +155,7 @@ class Exam:
 	'''
 		Answer line
 		The location to replace with the answer will be marked with the
-		answerindicator
+		ANSWER_TAG
 		'''
 	answer_buffer = ""
 
@@ -141,48 +170,87 @@ class Exam:
 		with open(path,"r") as f:
 			for line in f:
 				# pdb.set_trace()
-				if Constants.begin_question in line:
+				if Constants.BEGIN_QUESTION_TAG in line:
 					inside_question = True
 				
 				if inside_question == True:
 					#pdb.set_trace()
-					if Constants.answerindicator in line:
+					if Constants.ANSWER_TAG in line:
 						self.answer_buffer = line
 						self.template_buffer += ('\n'+
-							Constants.answerindicator+'\n')
-					elif Constants.questionindicator in line:
+							Constants.ANSWER_TAG+'\n')
+					elif Constants.QUESTION_TAG in line:
 						self.question_buffer = line
 						self.template_buffer += ('\n'+
-							Constants.questionindicator+'\n')
-					elif Constants.end_question in line:
+							Constants.QUESTION_TAG+'\n')
+					elif Constants.END_QUESTION_TAG in line:
 						inside_question = False
 				else:
 					self.template_buffer += line
 					
+def check_input_parameters(answer_set_size, question_database_path,
+	student_database_path, number_of_questions, output_format,
+	latex_template_location):
 
-parser = argparse.ArgumentParser(description='Creates exams')
-parser.add_argument('--answ', dest='answerSetSize', default=5,
-					help='Set the answer set size (default: 5)')
-parser.add_argument('--qdb', dest='questionDatabasePath',
-					required=True, help= 'Set the question database file path')
-parser.add_argument('--edb', dest='studentDatabasePath', required=True,
-					help='Set the student database file')
-parser.add_argument('--nq', dest='numberOfQuestions', required=True,
-					help='Set the number of questions of the test')
-parser.add_argument('--ouf', dest='outputFormat', default='latex',
-					help='Set the output format')
-parser.add_argument('--latemp', dest='latexTemplateLocation',
-					help='Set the latex template path')
+	error_msg = ''
+	'''
+	TO DO
+	check question_database_path, student_database_path
+	for right number of tags 
+
+	number_of_questions, output_format, latex_template_location
+	'''
+
+	# Path validation
+	path = [question_database_path,question_database_path]
+	for element in path:
+		try:
+			f = open(element)
+		except IOError:
+			error_msg += (Constants.FAIL + 'Error: I/O for path: ' + element 
+				+ Constants.ENDC + '\n')
+	
+	# Answer set size validation
+	if answer_set_size < 2:
+		error_msg +=  (Constants.FAIL
+			+ 'Error: The answer set size must be greater '
+			'or equal to 2' + Constants.ENDC + '\n')
+
+	if len(error_msg)>0:
+		print error_msg
+		sys.exit()
+
+parser = argparse.ArgumentParser(description ='Creates exams')
+parser.add_argument('--answ', dest = 'answer_set_size', default = 5,
+					help = 'Set the answer set size (default: 5)')
+parser.add_argument('--qdb', dest = 'question_database_path',
+					required = True, help = 
+					'Set the question database file path')
+parser.add_argument('--edb', dest = 'student_database_path', required = True,
+					help = 'Set the student database file')
+parser.add_argument('--nq', dest = 'number_of_questions', required = True,
+					help = 'Set the number of questions of the test')
+parser.add_argument('--ouf', dest = 'output_format', default = 'latex',
+					help = 'Set the output format')
+parser.add_argument('--latemp', dest = 'latex_template_location',
+					help = 'Set the latex template path')
 args = parser.parse_args()
 
-questionobjs = read_question_file(args.questionDatabasePath)
+check_input_parameters(answer_set_size=args.answer_set_size,
+	question_database_path = args.question_database_path,
+	student_database_path = args.student_database_path,
+	number_of_questions = args.number_of_questions, 
+	output_format = args.output_format, 
+	latex_template_location = args.latex_template_location)
+
+questionobjs = read_question_file(args.question_database_path)
 
 question_statement, answers, rigth_answer_index = (questionobjs[2]
-	.generate_shuffled_question(int(args.answerSetSize)))
+	.generate_shuffled_question(int(args.answer_set_size)))
 
 exam = Exam()
-if args.outputFormat == 'latex':
-	exam.read_latex_template(args.latexTemplateLocation)
+if args.output_format == 'latex':
+	exam.read_latex_template(args.latex_template_location)
 
 print "Question buffer ---"
 print exam.question_buffer
