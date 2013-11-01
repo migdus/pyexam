@@ -1,0 +1,73 @@
+Student database example.
+
+Lines without tag will be ignored.
+
+:STUDENT_NAME: Waldina Dávila de Ponce de León
+:STUDENT_CODE: 1823_1900
+
+:STUDENT_NAME: José Eustasio Rivera
+:STUDENT_CODE: 1889_1928
+
+:STUDENT_NAME: Joaquín García Borrero
+:STUDENT_CODE: 1894_1948
+
+:STUDENT_NAME: Humberto Tafur Charry
+:STUDENT_CODE: 123
+
+:STUDENT_NAME: Benhur Sánchez
+:STUDENT_CODE: 124
+
+:STUDENT_NAME: Guillermo González Otálora
+:STUDENT_CODE: 125
+
+:STUDENT_NAME: Carlos Alberto Celis
+:STUDENT_CODE: 126
+
+:STUDENT_NAME: Winston Morales Chavarro
+:STUDENT_CODE: 127
+
+:STUDENT_NAME: Ricardo Borrero Álvarez
+:STUDENT_CODE: 1874_1931
+
+:STUDENT_NAME: Mario Ayerbe
+:STUDENT_CODE: 128
+
+:STUDENT_NAME: José Milton Morales Grillo
+:STUDENT_CODE: 129
+
+:STUDENT_NAME: Juan Diego Guzmán Tafur
+:STUDENT_CODE: 130
+
+:STUDENT_NAME: Jorge Villamil Cordovez
+:STUDENT_CODE: 1929_2010)
+
+:STUDENT_NAME: José Ignacio Olave Cabrera
+:STUDENT_CODE: 131
+
+:STUDENT_NAME: José Ignacio Tobar
+:STUDENT_CODE: 132
+
+:STUDENT_NAME: Raquel Ércole
+:STUDENT_CODE: 133
+
+:STUDENT_NAME: Policarpa Salavarrieta
+:STUDENT_CODE: 1795_1817
+
+:STUDENT_NAME: Simón Bolívar
+:STUDENT_CODE: 1783_1830
+
+:STUDENT_NAME: Francisco de Paula Santander
+:STUDENT_CODE: 1792_1840
+
+:STUDENT_NAME: Antonio Nariño
+:STUDENT_CODE: 1765_1823
+
+:STUDENT_NAME: Camilo Torres
+:STUDENT_CODE: 1766_1813
+
+:STUDENT_NAME: José María Córdoba
+:STUDENT_CODE: 1799_1829
+
+:STUDENT_NAME: Francisco José de Caldas
+:STUDENT_CODE: 1768_1816
+
