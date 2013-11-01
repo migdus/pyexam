@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys, random, argparse, pdb
+import sys, random, argparse
 
 class Constants:
 	'''
@@ -14,7 +14,7 @@ class Constants:
 	BEGIN_QUESTION_TAG = ":BEGIN_QUESTION:"
 	END_QUESTION_TAG = ":END_QUESTION:"
 	STUDENT_NAME_TAG = ":STUDENT_NAME:"
-	STUDENT_CODE_TAG = ":STUDENT_CODE"
+	STUDENT_CODE_TAG = ":STUDENT_CODE:"
 
 	'''
 	Adds some terminal color support
@@ -87,8 +87,9 @@ class Question:
 	Returns: question statement, answers and the index of the right answer
 	'''
 	def generate_shuffled_question(self,answer_set_size):
+		
 		if len(self._answers)+1 < answer_set_size:
-			error_msg += (
+			error_msg = (
 				Constants.FAIL + 'Error: The number of answer choices is less '
 				'than the answer set size.'+Constants.ENDC + '\n'
 				+ Constants.HEADER+'Question:'+Constants.ENDC + " "
@@ -104,6 +105,7 @@ class Question:
 				'parameter' + Constants.ENDC + '\n')
 			print error_msg
 			sys.exit()
+
 		answers = self._answers[:answer_set_size-1]
 		answers.append(self._right_answer)
 		shuffle(answers)
@@ -113,36 +115,49 @@ class Question:
 class Exam:
 
 	_template_buffer = ""
+	_question_statement_buffer = ""
 	_question_buffer = ""
 	_answer_buffer = ""
 
 	def __init__(self, question_db_path, latex_template_path,
-			student_database_path, number_of_questions):
+			student_database_path, number_of_questions, answer_set_size):
 		self._question_db_path = question_db_path
 		self._question_list = []
 		self._latex_template_path = latex_template_path
 		self._student_database_path = student_database_path
 		self._number_of_questions = number_of_questions
 		self._student_database = []
+		self._answer_set_size = answer_set_size
 
 	def read_latex_template(self):
+
 		print Constants.OKGREEN + 'Reading latex template' + Constants.ENDC
+		
 		inside_question = False
+		
 		with open(self._latex_template_path,"r") as f:
+			
 			for line in f:
-				if Constants.BEGIN_QUESTION_TAG in line:
+				
+				if (Constants.BEGIN_QUESTION_TAG in line or
+					inside_question == True):
+
 					inside_question = True
-				if inside_question == True:
+				
 					if Constants.ANSWER_TAG in line:
 						self._answer_buffer = line
-						self._template_buffer += ('\n' +
-							Constants.ANSWER_TAG +'\n')
+						self._question_buffer += ('\n' + Constants.ANSWER_TAG +'\n')
+
 					elif Constants.QUESTION_TAG in line:
-						self._question_buffer = line
-						self._template_buffer += ('\n' +
-							Constants.QUESTION_TAG + '\n')
+						self._question_statement_buffer = line
+						self._question_buffer += ('\n' + Constants.QUESTION_TAG + '\n')
+					
 					elif Constants.END_QUESTION_TAG in line:
 						inside_question = False
+						self._template_buffer += ('\n' + Constants.QUESTION_TAG + '\n')
+					elif Constants.BEGIN_QUESTION_TAG not in line:
+						self._question_buffer += line
+
 				else:
 					self._template_buffer += line
 
@@ -154,6 +169,7 @@ class Exam:
 		first_item = True
 		with open(self._question_db_path,"r") as f:
 			line_number = 1
+			
 			for line in f:
 				if Constants.QUESTION_TAG in line:
 					
@@ -162,8 +178,8 @@ class Exam:
 					else:
 						self._question_list.append(question)
 					question = Question();
-					question.set_question_statement = (line.strip()
-						.replace(Constants.QUESTION_TAG,""))
+					question.set_question_statement((line.strip()
+						.replace(Constants.QUESTION_TAG,"")))
 					question.set_question_line_number = line_number
 				if Constants.ANSWER_TAG in line:
 					question.add_new_answer(line.strip()
@@ -217,8 +233,58 @@ class Exam:
 	def generate(self):
 		student_database = self._student_database[:]
 		for student in student_database:
-			student['name']
-			student['code']
+
+			template_buffer = self._template_buffer
+			template_buffer = template_buffer.replace(
+				Constants.STUDENT_NAME_TAG, student['name'])
+			template_buffer = template_buffer.replace(
+				Constants.STUDENT_CODE_TAG, student['code'])
+
+			shuffle(self._question_list)
+			
+			question_list = (self._question_list[:int(self._number_of_questions)])
+
+			for question in question_list:
+				
+				question_statement, answers, rigth_answer_index = (
+					question.generate_shuffled_question(self._answer_set_size))
+				
+				question_statement_buffer = self._question_statement_buffer
+
+				question_statement_buffer = question_statement_buffer.replace(
+					Constants.QUESTION_TAG, question_statement)
+
+				question_buffer = self._question_buffer
+
+				question_buffer = question_buffer.replace(
+					Constants.QUESTION_TAG, question_statement_buffer)
+
+				answer_str = ''
+				answer_right_str=''
+				
+				for answer in answers:
+					answer_buffer = self._answer_buffer
+					answer_buffer = answer_buffer.replace(
+						Constants.ANSWER_TAG, answer)
+					answer_str += answer_buffer + '\n'
+
+				question_buffer = question_buffer.replace(
+					Constants.ANSWER_TAG, answer_str)
+
+				template_buffer_before_tag = (template_buffer
+					[:template_buffer.find(Constants.QUESTION_TAG)])
+				
+				template_buffer_after_tag = (template_buffer
+					[len(template_buffer_before_tag) +
+					len(Constants.QUESTION_TAG):])
+
+				template_buffer = (template_buffer_before_tag + question_buffer  
+					+ Constants.QUESTION_TAG + '\n' + template_buffer_after_tag)
+			
+			with open('test/salida.'+student['code']+'.tex','w') as f:
+				template_buffer = (template_buffer.
+					replace(Constants.QUESTION_TAG,''))
+				f.write(template_buffer)
 
 def check_input_parameters(answer_set_size, question_database_path,
 	student_database_path, number_of_questions, output_format,
@@ -280,15 +346,25 @@ if args.output_format == 'latex':
 	exam = Exam(question_db_path = args.question_database_path,
 		latex_template_path = args.latex_template_location,
 		student_database_path = args.student_database_path,
-		number_of_questions = args.number_of_questions)
+		number_of_questions = int(args.number_of_questions),
+		answer_set_size = int(args.answer_set_size))
 	exam.read_question_file()
 	exam.read_latex_template()
 	exam.read_student_file()
-	print exam._student_database
+	exam.generate()
+	'''
+	print "template buffer"
+	print exam._template_buffer
+	print "question buffer"
+	print exam._question_buffer
+	print "answer buffer"
+	print exam._answer_buffer
+	print "question statement buffer"
+	print exam._question_statement_buffer
 	'''
 	question_statement, answers, rigth_answer_index = (exam._question_list[2]
 		.generate_shuffled_question(int(args.answer_set_size)))
-	'''
+	
 
 
 
