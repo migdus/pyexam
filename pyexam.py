@@ -236,6 +236,21 @@ class Exam:
 					sys.exit()
 
 				line_counter += 1
+	def _index_to_choice(self,index):
+		if index == 0:
+			return 'a'
+		elif index == 1:
+			return 'b'
+		elif index == 2:
+			return 'c'
+		elif index == 3:
+			return 'd'
+		elif index == 4:
+			return 'e'
+		else:
+			error_msg +=  (Constants.FAIL
+			+ 'Error: The index is greater than 4' + Constants.ENDC + '\n')
+			sys.exit()
 
 	def generate(self):
 
@@ -254,12 +269,15 @@ class Exam:
 			shuffle(self._question_list)
 			
 			question_list = (self._question_list[:int(self._number_of_questions)])
-
+			question_answer = []
 			for question in question_list:
 				
 				question_statement, answers, rigth_answer_index = (
 					question.generate_shuffled_question(self._answer_set_size))
 				
+				question_answer.append([question_statement,
+					self._index_to_choice(rigth_answer_index)])
+
 				question_statement_buffer = self._question_statement_buffer
 
 				question_statement_buffer = question_statement_buffer.replace(
@@ -294,10 +312,19 @@ class Exam:
 			
 			output_path = (self._output_directory + '/exam_' + student['code']
 				+ '.tex')
+
 			with open(output_path,'w') as f:
 				template_buffer = (template_buffer.
 					replace(Constants.QUESTION_TAG,''))
 				f.write(template_buffer)
+
+			output_answer_path = output_path.replace('.tex','.answer.txt')
+
+			with open(output_answer_path,'w') as f:
+				for element in question_answer:
+					f.write('Question: '+ element[0] + '\n' + 'Answer: ' 
+						+ element[1] + '\n')
+
 
 def check_input_parameters(answer_set_size, question_database_path,
 	student_database_path, number_of_questions, latex_template_location):

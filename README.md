@@ -23,12 +23,10 @@ All flags must have the -- **before** using them  (refer to the ***Usage*** exam
 
 #### Output
 
-The script generates a folder with the date and hour as its name. Inside of it you'll find:
+The script generates an *output* folder, and inside of it a folder with the date and hour as its name. Inside of it you'll find:
 
-* **EXAM.ALL**: All exams in one single file.
-* **ANSWERS.ALL**: Solved exams in one single file.
-* **EXAM_STUDENT_CODE**: A file containing a exam for the student. There's one for each student in the student database.
-* **ANSWERS.STUDENT_CODE_STUDENT_NAME**: Solved exam for one student.  There's one for each student in the student database.
+* **exam_studentCode.tex**: A file containing a exam for the student. There's one for each student in the student database.
+* **exam_studentCode.answer.txt**: Solved exam for one student.  There's one for each student in the student database.
 
 ###### Latex Output
 
@@ -75,7 +73,7 @@ The student database file holds the student information. **Use only one tag per 
 
 Each student contains the following tags:
 
-* **:STUDENT_NAME:**: The student name. Contains first name and last name.
+* **:STUDENT_NAME:** The student name. Contains first name and last name.
 * **:STUDENT_CODE:** A code that identifies a student.
 
 #### Example
