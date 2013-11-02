@@ -1,7 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys, random, argparse
+import sys
+import random
+from random import shuffle
+import argparse
+import datetime
+import os
 
 class Constants:
 	'''
@@ -16,6 +21,7 @@ class Constants:
 	STUDENT_NAME_TAG = ":STUDENT_NAME:"
 	STUDENT_CODE_TAG = ":STUDENT_CODE:"
 
+	OUTPUT_DIRECTORY = "output"
 	'''
 	Adds some terminal color support
 	'''
@@ -44,15 +50,6 @@ class Constants:
 		self.WARNING = ''
 		self.FAIL = ''
 		self.ENDC = ''
-
-'''
-Shuffles a list using the Knuth-Fisher-Yates shuffle algorithm
-'''
-def shuffle(aList):
-	maxrange = len(aList)-1
-	for i in xrange(maxrange,0,-1):
-		n = random.randint(0,maxrange)
-		aList[i], aList[n] = aList[n], aList[i]
 
 class Question:
 
@@ -106,7 +103,9 @@ class Question:
 			print error_msg
 			sys.exit()
 
-		answers = self._answers[:answer_set_size-1]
+		answers = self._answers[:]
+		shuffle(answers)
+		answers = answers[:answer_set_size-1]
 		answers.append(self._right_answer)
 		shuffle(answers)
 		return (self._question_statement, answers, 
@@ -128,6 +127,14 @@ class Exam:
 		self._number_of_questions = number_of_questions
 		self._student_database = []
 		self._answer_set_size = answer_set_size
+
+	def generate_output_directory(self):
+		self._output_directory = (Constants.OUTPUT_DIRECTORY + '/' +
+			datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+		os.makedirs(self._output_directory)
+		print (Constants.OKGREEN + 'Output directory created at ' +
+		self._output_directory + Constants.ENDC)
+
 
 	def read_latex_template(self):
 
@@ -205,7 +212,7 @@ class Exam:
 				if Constants.STUDENT_NAME_TAG in line:
 					if flag_expected_student_name_tag == True:
 						new_student['name'] = line.replace(
-							Constants.STUDENT_NAME_TAG, '')
+							Constants.STUDENT_NAME_TAG, '').strip()
 						flag_expected_student_name_tag = False
 					else:
 						error_msg.replace("EXPECTED_TAG_NAME",
@@ -215,7 +222,7 @@ class Exam:
 				elif Constants.STUDENT_CODE_TAG in line:
 					if flag_expected_student_name_tag == False:
 						new_student['code'] = line.replace(
-							Constants.STUDENT_CODE_TAG, '')
+							Constants.STUDENT_CODE_TAG, '').strip()
 						self._student_database.append(new_student)
 						new_student = {}
 						flag_expected_student_name_tag = True
@@ -231,7 +238,11 @@ class Exam:
 				line_counter += 1
 
 	def generate(self):
+
+		self.generate_output_directory()
+
 		student_database = self._student_database[:]
+
 		for student in student_database:
 
 			template_buffer = self._template_buffer
@@ -266,7 +277,7 @@ class Exam:
 					answer_buffer = self._answer_buffer
 					answer_buffer = answer_buffer.replace(
 						Constants.ANSWER_TAG, answer)
-					answer_str += answer_buffer + '\n'
+					answer_str += answer_buffer 
 
 				question_buffer = question_buffer.replace(
 					Constants.ANSWER_TAG, answer_str)
@@ -279,16 +290,17 @@ class Exam:
 					len(Constants.QUESTION_TAG):])
 
 				template_buffer = (template_buffer_before_tag + question_buffer  
-					+ Constants.QUESTION_TAG + '\n' + template_buffer_after_tag)
+					+ Constants.QUESTION_TAG + template_buffer_after_tag)
 			
-			with open('test/salida.'+student['code']+'.tex','w') as f:
+			output_path = (self._output_directory + '/exam_' + student['code']
+				+ '.tex')
+			with open(output_path,'w') as f:
 				template_buffer = (template_buffer.
 					replace(Constants.QUESTION_TAG,''))
 				f.write(template_buffer)
 
 def check_input_parameters(answer_set_size, question_database_path,
-	student_database_path, number_of_questions, output_format,
-	latex_template_location):
+	student_database_path, number_of_questions, latex_template_location):
 
 	error_msg = ''
 	'''
@@ -328,8 +340,6 @@ parser.add_argument('--sdb', dest = 'student_database_path', required = True,
 					help = 'Set the student database file')
 parser.add_argument('--nq', dest = 'number_of_questions', required = True,
 					help = 'Set the number of questions of the test')
-parser.add_argument('--ouf', dest = 'output_format', default = 'latex',
-					help = 'Set the output format')
 parser.add_argument('--latemp', dest = 'latex_template_location',
 					help = 'Set the latex template path')
 args = parser.parse_args()
@@ -337,33 +347,18 @@ args = parser.parse_args()
 check_input_parameters(answer_set_size=args.answer_set_size,
 	question_database_path = args.question_database_path,
 	student_database_path = args.student_database_path,
-	number_of_questions = args.number_of_questions, 
-	output_format = args.output_format, 
+	number_of_questions = args.number_of_questions,
 	latex_template_location = args.latex_template_location)
 
-
-if args.output_format == 'latex':
-	exam = Exam(question_db_path = args.question_database_path,
-		latex_template_path = args.latex_template_location,
-		student_database_path = args.student_database_path,
-		number_of_questions = int(args.number_of_questions),
-		answer_set_size = int(args.answer_set_size))
-	exam.read_question_file()
-	exam.read_latex_template()
-	exam.read_student_file()
-	exam.generate()
-	'''
-	print "template buffer"
-	print exam._template_buffer
-	print "question buffer"
-	print exam._question_buffer
-	print "answer buffer"
-	print exam._answer_buffer
-	print "question statement buffer"
-	print exam._question_statement_buffer
-	'''
-	question_statement, answers, rigth_answer_index = (exam._question_list[2]
-		.generate_shuffled_question(int(args.answer_set_size)))
+exam = Exam(question_db_path = args.question_database_path,
+	latex_template_path = args.latex_template_location,
+	student_database_path = args.student_database_path,
+	number_of_questions = int(args.number_of_questions),
+	answer_set_size = int(args.answer_set_size))
+exam.read_question_file()
+exam.read_latex_template()
+exam.read_student_file()
+exam.generate()
 	
 
 
