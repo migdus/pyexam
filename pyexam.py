@@ -258,6 +258,8 @@ class Exam:
 
 		student_database = self._student_database[:]
 
+		output_tex_file_names = []
+
 		for student in student_database:
 
 			template_buffer = self._template_buffer
@@ -318,12 +320,20 @@ class Exam:
 					replace(Constants.QUESTION_TAG,''))
 				f.write(template_buffer)
 
+			output_tex_file_names.append('exam_' + student['code']
+				+ '.tex')
+
 			output_answer_path = output_path.replace('.tex','.answer.txt')
 
 			with open(output_answer_path,'w') as f:
 				for element in question_answer:
 					f.write('Question: '+ element[0] + '\n' + 'Answer: ' 
 						+ element[1] + '\n')
+
+		with open(self._output_directory + '/exam_all_compile.sh', 'w') as f:
+			for element in output_tex_file_names:
+				f.write('pdflatex ' + element + '\n')
+
 
 
 def check_input_parameters(answer_set_size, question_database_path,
