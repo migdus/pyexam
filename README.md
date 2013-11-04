@@ -19,6 +19,7 @@ Here is a complete example:
 * **--nq**: Number of questions of the exam.
 * **--answ**: Answer set size per question. This must be greater or equal to 2 and less than the number of choices of each question.
 * **--latemp**: Location of the latex template.
+* **--output**: Location of the output file.
 
 All flags must have the -- **before** using them  (refer to the ***Usage*** example).
 
@@ -29,7 +30,7 @@ The script generates an *output* folder, and inside of it a folder with the date
 * **exam_studentCode.tex**: A file containing a exam for the student. There's one for each student in the student database.
 * **exam_studentCode.answer.txt**: Solved exam for one student.  There's one for each student in the student database.
 * **exam_all_compile.sh**: A script to compile latex files into pdf. Uses pdflatex.
-* 
+
 ###### Latex Output
 
 You have to define the latex template. This template is a simple latex file with your information, page configuration, etc, but contains the following tags:

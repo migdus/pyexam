@@ -119,7 +119,8 @@ class Exam:
 	_answer_buffer = ""
 
 	def __init__(self, question_db_path, latex_template_path,
-			student_database_path, number_of_questions, answer_set_size):
+			student_database_path, number_of_questions, answer_set_size, 
+			output_path):
 		self._question_db_path = question_db_path
 		self._question_list = []
 		self._latex_template_path = latex_template_path
@@ -127,6 +128,7 @@ class Exam:
 		self._number_of_questions = number_of_questions
 		self._student_database = []
 		self._answer_set_size = answer_set_size
+		self._output_directory = output_path
 
 	def generate_output_directory(self):
 		self._output_directory = (Constants.OUTPUT_DIRECTORY + '/' +
@@ -265,8 +267,8 @@ class Exam:
 			sys.exit()
 
 	def generate(self):
-
-		self.generate_output_directory()
+		if len(self._output_directory) == 0:
+			self.generate_output_directory()
 
 		student_database = self._student_database[:]
 
@@ -349,7 +351,8 @@ class Exam:
 
 
 def check_input_parameters(answer_set_size, question_database_path,
-	student_database_path, number_of_questions, latex_template_location):
+	student_database_path, number_of_questions, latex_template_location,
+	output_path):
 
 	error_msg = ''
 	'''
@@ -375,6 +378,11 @@ def check_input_parameters(answer_set_size, question_database_path,
 			+ 'Error: The answer set size must be greater '
 			'or equal to 2' + Constants.ENDC + '\n')
 
+	if len(output_path) > 0 and os.path.exists(output_path) == False:
+		error_msg += (Constants.FAIL
+			+ 'Error: The given output path does not exist.' + Constants.ENDC 
+			+ '\n')
+
 	if len(error_msg)>0:
 		print error_msg
 		sys.exit()
@@ -390,20 +398,24 @@ parser.add_argument('--sdb', dest = 'student_database_path', required = True,
 parser.add_argument('--nq', dest = 'number_of_questions', required = True,
 					help = 'Set the number of questions of the test')
 parser.add_argument('--latemp', dest = 'latex_template_location',
-					help = 'Set the latex template path')
+					help = 'Set the latex template path')	
+parser.add_argument('--output', dest = 'output_path', required = False,
+					help = 'Set the output path', default ='')
 args = parser.parse_args()
 
 check_input_parameters(answer_set_size=args.answer_set_size,
 	question_database_path = args.question_database_path,
 	student_database_path = args.student_database_path,
 	number_of_questions = args.number_of_questions,
-	latex_template_location = args.latex_template_location)
+	latex_template_location = args.latex_template_location,
+	output_path = args.output_path)
 
 exam = Exam(question_db_path = args.question_database_path,
 	latex_template_path = args.latex_template_location,
 	student_database_path = args.student_database_path,
 	number_of_questions = int(args.number_of_questions),
-	answer_set_size = int(args.answer_set_size))
+	answer_set_size = int(args.answer_set_size),
+	output_path = args.output_path)
 exam.read_question_file()
 exam.read_latex_template()
 exam.read_student_file()
