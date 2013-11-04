@@ -19,6 +19,7 @@ Here is a complete example:
 * **--nq**: Number of questions of the exam.
 * **--answ**: Answer set size per question. This must be greater or equal to 2 and less than the number of choices of each question.
 * **--latemp**: Location of the latex template.
+* **--output**: Location of the output file.
 
 All flags must have the -- **before** using them  (refer to the ***Usage*** example).
 
