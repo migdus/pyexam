@@ -5,6 +5,7 @@
 
 It takes a question database, an student database, mix them and generate unique exams using a latex template.
 
+This has been tested on mac only. It should work for Linux, too.
 ## Usage
 
 Here is a complete example:
