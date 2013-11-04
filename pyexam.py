@@ -346,7 +346,8 @@ class Exam:
 
 		with open(self._output_directory + '/exam_all_compile.sh', 'w') as f:
 			for element in output_tex_file_names:
-				f.write('pdflatex ' + element + '\n')
+				f.write('pdflatex \"' + self._output_directory + "\"/" + element 
+					+ '\n')
 
 
 
