@@ -197,6 +197,18 @@ class Exam:
 				line_number += 1
 		self._question_list.append(question)
 
+		if self._number_of_questions > len(self._question_list) - 1:
+			error_msg =  (Constants.FAIL
+			+ 'Error: The number of questions in the question file is less '
+			'than the number of questions provided as option\n' 
+			+ Constants.HEADER + 'Option provided: ' + Constants.ENDC
+			+ str(self._number_of_questions) + Constants.HEADER 
+			+ '\nQuestions in question db: ' + Constants.ENDC
+			+ str(len(self._question_list) - 1)
+			+ Constants.ENDC + '\n')
+			print error_msg
+			sys.exit()
+
 	def read_student_file(self):
 		flag_expected_student_name_tag = True
 		flag_error_found = False
