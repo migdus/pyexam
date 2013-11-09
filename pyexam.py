@@ -148,14 +148,6 @@ class Exam:
 		self._answer_set_size = answer_set_size
 		self._output_directory = output_path
 
-	def generate_output_directory(self):
-		self._output_directory = (Constants.OUTPUT_DIRECTORY + '/' +
-			datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
-		os.makedirs(self._output_directory)
-		print (Constants.OKGREEN + 'Output directory created at ' +
-		self._output_directory + Constants.ENDC)
-
-
 	def read_latex_template(self):
 
 		print Constants.OKGREEN + 'Reading latex template' + Constants.ENDC
@@ -284,10 +276,18 @@ class Exam:
 			+ 'Error: The index is greater than 4' + Constants.ENDC + '\n')
 			sys.exit()
 
+	'''
+	Generate the exam
+	'''
 	def generate(self):
+		# 
 		if len(self._output_directory) == 0:
-			self.generate_output_directory()
-
+			self._output_directory = (Constants.OUTPUT_DIRECTORY + '/' +
+			datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+			os.makedirs(self._output_directory)
+			print (Constants.OKGREEN + 'Output directory created at ' +
+			self._output_directory + Constants.ENDC)
+		# Get a copy of the student db
 		student_database = self._student_database[:]
 
 		output_tex_file_names = []
@@ -363,8 +363,9 @@ class Exam:
 						+ element[1] + '\n')
 
 		with open(self._output_directory + '/exam_all_compile.sh', 'w') as f:
+			complete_path = os.path.abspath(self._output_directory)
 			for element in output_tex_file_names:
-				f.write('pdflatex \"' + self._output_directory + "\"/" + element 
+				f.write('pdflatex ' +  complete_path + "/" + element 
 					+ '\n')
 
 
