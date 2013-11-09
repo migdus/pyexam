@@ -391,8 +391,7 @@ class Exam:
 		with open(self._output_directory + '/exam_all_compile.sh', 'w') as f:
 			complete_path = os.path.abspath(self._output_directory)
 			for element in output_tex_file_names:
-				f.write('pdflatex \"' +  complete_path + "\"/" + element 
-					+ '\n')
+				f.write('pdflatex \"' +  complete_path + "\"/" + element + '\n')
 
 
 
