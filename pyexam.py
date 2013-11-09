@@ -130,10 +130,18 @@ class Question:
 Generates a new exam
 '''
 class Exam:
-
+	# The latex template
 	_template_buffer = ""
+
+	# The question statement text
 	_question_statement_buffer = ""
+
+	# Holds a complete question with the answer option, taken from the latex
+	# template
 	_question_buffer = ""
+
+	# The buffer of the line in the latex template that holds an answer for a 
+	# question
 	_answer_buffer = ""
 
 	def __init__(self, question_db_path, latex_template_path,
@@ -280,7 +288,9 @@ class Exam:
 	Generate the exam
 	'''
 	def generate(self):
-		# 
+		# Checks if the user added the output directory path.
+		# If not, then create a new directory in the current path
+		# with date and time in its name.
 		if len(self._output_directory) == 0:
 			self._output_directory = (Constants.OUTPUT_DIRECTORY + '/' +
 			datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
@@ -292,33 +302,43 @@ class Exam:
 
 		output_tex_file_names = []
 
+		# Create a exam for each student in the database
 		for student in student_database:
 
+			# Copy the buffer, then add the student name and code to
+			# the template according to the tags (see Constants class)
 			template_buffer = self._template_buffer
 			template_buffer = template_buffer.replace(
 				Constants.STUDENT_NAME_TAG, student['name'])
 			template_buffer = template_buffer.replace(
 				Constants.STUDENT_CODE_TAG, student['code'])
-
-			shuffle(self._question_list)
 			
+			# Shuffle the questions and get a subset according to the number of 
+			# questions set by the user.
+			shuffle(self._question_list)
 			question_list = (self._question_list[:int(self._number_of_questions)])
+			
+
 			question_answer = []
 			for question in question_list:
 				
 				question_statement, answers, rigth_answer_index = (
 					question.generate_shuffled_question(self._answer_set_size))
-				
+
+				# Adds a list to the question_answer with two elements:
+				# the statement and the index of the right answer
 				question_answer.append([question_statement,
 					self._index_to_choice(rigth_answer_index)])
 
+				# Creates a copy of the question statement buffer and replaces
+				# the question tag with the current question
 				question_statement_buffer = self._question_statement_buffer
-
 				question_statement_buffer = question_statement_buffer.replace(
 					Constants.QUESTION_TAG, question_statement)
-
+				
+				# Creates a copy of the question and replaces
+				# the question tag with the current question statement buffer
 				question_buffer = self._question_buffer
-
 				question_buffer = question_buffer.replace(
 					Constants.QUESTION_TAG, question_statement_buffer)
 
@@ -326,21 +346,27 @@ class Exam:
 				answer_right_str=''
 				
 				for answer in answers:
+					# Takes an answer and adds to the answer buffer
 					answer_buffer = self._answer_buffer
 					answer_buffer = answer_buffer.replace(
 						Constants.ANSWER_TAG, answer)
 					answer_str += answer_buffer 
 
+				# Replaces the section of the answers with the text of 
+				# the answers
 				question_buffer = question_buffer.replace(
 					Constants.ANSWER_TAG, answer_str)
 
+				# Split the whole template in two: before and after the question
+				# tag
 				template_buffer_before_tag = (template_buffer
 					[:template_buffer.find(Constants.QUESTION_TAG)])
 				
 				template_buffer_after_tag = (template_buffer
 					[len(template_buffer_before_tag) +
 					len(Constants.QUESTION_TAG):])
-
+				
+				# Rebuild the template but adding the question
 				template_buffer = (template_buffer_before_tag + question_buffer  
 					+ Constants.QUESTION_TAG + template_buffer_after_tag)
 			
