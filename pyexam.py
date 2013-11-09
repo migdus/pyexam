@@ -8,6 +8,9 @@ import argparse
 import datetime
 import os
 
+'''
+Constants for the script.
+'''
 class Constants:
 	'''
 	Internal tags
@@ -21,7 +24,11 @@ class Constants:
 	STUDENT_NAME_TAG = ":STUDENT_NAME:"
 	STUDENT_CODE_TAG = ":STUDENT_CODE:"
 
+	'''
+	Default output directory
+	'''
 	OUTPUT_DIRECTORY = "output"
+
 	'''
 	Adds some terminal color support
 	'''
@@ -51,29 +58,36 @@ class Constants:
 		self.FAIL = ''
 		self.ENDC = ''
 
+'''
+This keeps one question with the answer set in memory
+'''
 class Question:
 
 	def __init__(self, question_statement=None, answers=None, 
 				right_answer=None,question_line_number=None):
+		# The question
 		self._question_statement = (question_statement if question_statement 
 			is not None else "")
+		# Answers list
 		self._answers = shuffle(self._answers) if answers is not None else []
+		# Right answer. This will be separated from the rest of the answers
 		self._right_answer = right_answer if right_answer is not None else ""
+		# Location line of the question db file of this particular question
 		self._question_line_number = (question_line_number if 
 			question_line_number is not None else "0")
-	
+	# question statement setter
 	def set_question_statement(self,question_statement):
 		self._question_statement = question_statement
-
+	# answers list setter 
 	def set_answers(self,answers):
 		self._answers = answers
-
+	# right answer setter
 	def set_right_answer(self,right_answer):
 		self._right_answer = right_answer
-
+	# question line number setter
 	def set_question_line_number(self,question_line_number):
 		self._question_line_number = question_line_number
-	
+	# add a new answer to the question
 	def add_new_answer(self,answer):
 		self._answers.append(answer)
 
@@ -81,10 +95,11 @@ class Question:
 	Generates a new question based on a random number of choices
 	limited by the answer_set_size.
 
-	Returns: question statement, answers and the index of the right answer
+	Returns: question statement, answers set and the index of the right answer
 	'''
 	def generate_shuffled_question(self,answer_set_size):
-		
+		# Check if answer_set_size parameter is ok according to the number
+		# of answers
 		if len(self._answers)+1 < answer_set_size:
 			error_msg = (
 				Constants.FAIL + 'Error: The number of answer choices is less '
@@ -102,7 +117,7 @@ class Question:
 				'parameter' + Constants.ENDC + '\n')
 			print error_msg
 			sys.exit()
-
+		#shuffles and returns a random answers set
 		answers = self._answers[:]
 		shuffle(answers)
 		answers = answers[:answer_set_size-1]
@@ -111,6 +126,9 @@ class Question:
 		return (self._question_statement, answers, 
 			answers.index(self._right_answer))
 
+'''
+Generates a new exam
+'''
 class Exam:
 
 	_template_buffer = ""
